@@ -6,7 +6,15 @@ from django.core.exceptions import ValidationError
 class UserRegisterationForm(forms.Form):
     username = forms.CharField()
     email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2= forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+
+    def clean(self):
+        cd = super().clean()
+        p1 = cd.get('password1')
+        p2 = cd.get('password2')
+        if p1 and p2 and p1 != p2:
+            raise ValidationError('Passwords are not match')
 
     def clean_email(self):
         email = self.cleaned_data['email']
