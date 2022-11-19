@@ -7,7 +7,7 @@ class UserRegisterationForm(forms.Form):
     username = forms.CharField()
     email = forms.EmailField()
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2= forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
     def clean(self):
         cd = super().clean()
@@ -29,3 +29,8 @@ class UserRegisterationForm(forms.Form):
         if user:
             raise ValidationError('This username is already exist')
         return username
+
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
