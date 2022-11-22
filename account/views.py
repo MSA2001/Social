@@ -9,15 +9,23 @@ from django.contrib import messages
 
 
 class UserRegisterView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home:home')
+        else:
+            return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
         form = UserRegisterationForm()
         return render(request, 'account/register.html', {'form': form})
+
 
     def post(self, request):
         form = UserRegisterationForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            User.objects.create_user(cd['username'], cd['email'], cd['password1'])
+            user = User.objects.create_user(cd['username'], cd['email'], cd['password1'])
+            login(request, user)
             messages.success(request, 'You registered successfully', 'success')
             return redirect('home:home')
         return render(request, 'account/register.html', {'form': form})
@@ -26,6 +34,12 @@ class UserRegisterView(View):
 class UserLoginView(View):
     form_class = UserLoginForm
     template_name = 'account/login.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home:home')
+        else:
+            return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
         form = self.form_class
