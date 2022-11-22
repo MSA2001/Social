@@ -4,6 +4,7 @@ from django.views import View
 from django.contrib.auth import login, authenticate, logout
 from .forms import UserRegisterationForm, UserLoginForm
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -58,7 +59,8 @@ class UserLoginView(View):
             return render(request, self.template_name, {'form': form})
 
 
-class UserLogoutView(View):
+class UserLogoutView(LoginRequiredMixin, View):
+
     def get(self, request):
         logout(request)
         messages.success(request,'you logged out successfully', 'success')
