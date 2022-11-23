@@ -1,5 +1,15 @@
 from django.contrib import admin
-from . import models
+from .models import Post
 # Register your models here.
 
-admin.site.register(models.Post)
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('slug', 'user', 'updated')
+    search_fields = ('slug', 'body')
+    list_filter = ('updated',)
+    prepopulated_fields = {'slug': ('title',)}
+
+
+
+
