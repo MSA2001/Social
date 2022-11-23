@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h4>{{ post.title }}</h4>
+    <h6>{{ post.user.username }}</h6>
+    <p>{{ post.body }}</p>
+     <p>{{ post.updated|date:'Y-M' }}</p>
+
+
+
+{% endblock %}
