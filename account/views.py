@@ -20,7 +20,6 @@ class UserRegisterView(View):
         form = UserRegisterationForm()
         return render(request, 'account/register.html', {'form': form})
 
-
     def post(self, request):
         form = UserRegisterationForm(request.POST)
         if form.is_valid():
@@ -63,7 +62,7 @@ class UserLogoutView(LoginRequiredMixin, View):
 
     def get(self, request):
         logout(request)
-        messages.success(request,'you logged out successfully', 'success')
+        messages.success(request, 'you logged out successfully', 'success')
         return redirect('home:home')
 
 
