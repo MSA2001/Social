@@ -8,8 +8,8 @@
     <p>{{ post.updated|date:'Y-M' }}</p>
 
     {% if request.user.id == post.user.id %}
+        <a href="{% url 'home:post_update' post.id %}" class="btn btn-primary">Update</a>
         <a href="{% url 'home:post_delete' post.id %}" class="btn btn-danger">Delete</a>
-
     {% endif %}
 
 {% endblock %}
