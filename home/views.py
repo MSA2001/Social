@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from .models import Post
@@ -18,13 +18,13 @@ class HomeView(View):
 
 class PostDetailView(View):
     def get(self, request, post_id, post_slug):
-        post = Post.objects.get(id=post_id, slug=post_slug)
+        post = get_object_or_404(Post, id=post_id, slug=post_slug)
         return render(request, 'home/detail.html', {'post': post})
 
 
 class PostDeleteView(LoginRequiredMixin, View):
     def get(self, request, post_id):
-        post = Post.objects.get(pk=post_id)
+        post = get_object_or_404(Post, pk=post_id)
         if post.user.id == request.user.id:
             post.delete()
             messages.success(request, 'Post deleted successfully', 'success')
@@ -38,7 +38,7 @@ class PostUpdateView(LoginRequiredMixin, View):
     form_class = PostUpdateForm
 
     def setup(self, request, *args, **kwargs):
-        self.post_instance = Post.objects.get(pk=kwargs['post_id'])
+        self.post_instance = get_object_or_404(Post, pk=kwargs['post_id'])
         return super().setup(request, *args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
@@ -80,7 +80,7 @@ class PostCreateView(LoginRequiredMixin, View):
             new_post.save()
             messages.success(request, 'You created your new post successfully', 'success')
             return redirect('home:post_detail', new_post.id, new_post.slug)
-        pass
+
 
 
 
