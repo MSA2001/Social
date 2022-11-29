@@ -13,11 +13,6 @@ from django.urls import reverse_lazy
 
 
 class UserRegisterView(View):
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home:home')
-        else:
-            return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
         form = UserRegisterationForm()
@@ -28,7 +23,7 @@ class UserRegisterView(View):
         if form.is_valid():
             cd = form.cleaned_data
             user = User.objects.create_user(cd['username'], cd['email'], cd['password1'])
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, 'You registered successfully', 'success')
             return redirect('home:home')
         return render(request, 'account/register.html', {'form': form})
@@ -86,7 +81,11 @@ class UserPasswordResetDoneView(auth_views.PasswordResetDoneView):
     template_name = 'account/password_reset_done.html'
 
 
-class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+class UserPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     template_name = 'account/password_reset_confirm.html'
     success_url = reverse_lazy('account:password_reset_complete')
+
+
+class UserPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'account/password_reset_complete.html'
 
