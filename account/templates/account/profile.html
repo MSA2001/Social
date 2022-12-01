@@ -18,4 +18,16 @@
     {% endif %}
 
 
+
+    {% if request.user.id != user.id and not is_following %}
+
+        <a href="{% url 'account:user_follow' user.id %}" class="btn btn-dark" >Follow</a>
+    {% elif request.user.id != user.id and is_following %}
+        <a href="{% url 'account:user_unfollow' user.id %}" class="btn btn-secondary" >Unfollow</a>
+
+
+    {% else %}
+
+    {% endif %}
+
 {% endblock %}
