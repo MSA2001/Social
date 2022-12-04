@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .forms import PostUpdateForm, PostCreateForm
@@ -19,7 +19,8 @@ class HomeView(View):
 class PostDetailView(View):
     def get(self, request, post_id, post_slug):
         post = get_object_or_404(Post, id=post_id, slug=post_slug)
-        return render(request, 'home/detail.html', {'post': post})
+        comments = post.pcomments.filter(is_reply=False)
+        return render(request, 'home/detail.html', {'post': post, 'comments': comments})
 
 
 class PostDeleteView(LoginRequiredMixin, View):

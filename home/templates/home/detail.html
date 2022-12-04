@@ -11,5 +11,13 @@
         <a href="{% url 'home:post_update' post.id %}" class="btn btn-primary">Update</a>
         <a href="{% url 'home:post_delete' post.id %}" class="btn btn-danger">Delete</a>
     {% endif %}
+    <hr>
+    <p>{{ comments.count }} Comments</p>
+    {% for comment in comments %}
+        <div class="card bg-dark text-white"><p class="card-header">{{ comment.user }} |  {{ comment.created|timesince }} </p>
+        <P class="card-body">{{ comment.body }}</P> </div>
+    {% empty %}
+        <p> No Comments yet </p>
+    {% endfor %}
 
 {% endblock %}
