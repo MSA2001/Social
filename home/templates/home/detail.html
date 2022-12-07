@@ -14,23 +14,57 @@
     <hr>
     <p>{{ comments.count }} Comments</p>
     {% if request.user.is_authenticated %}
-        <form method="post" action="">
-        {% csrf_token %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="down-contact">
+                        <form method="post" action="">
+                            {% csrf_token %}
 
-        {{ form.as_p }}
+                            {{ form.as_p }}
 
-        <input type="submit" value="Send" class="btn btn-primary mb-2">
+                            <input type="submit" value="Send" class="btn btn-primary mb-2">
 
+
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        </form>
     {% else %}
         <p class="alert alert-danger">Please login to add comment.</p>
     {% endif %}
-    <hr>
     {% for comment in comments %}
-        <div class="card bg-dark text-white"><p class="card-header">{{ comment.user }} |  {{ comment.created|timesince }} </p>
-        <P class="card-body">{{ comment.body }}</P> </div>
+        <div class="card bg-dark text-white"><p class="card-header">{{ comment.user }} | {{ comment.created|timesince }}
+            ago </p>
+            <P class="card-body">{{ comment.body }}</P>
+            {% if request.user.is_authenticated %}
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="down-contact">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <form action="{% url 'home:add_reply' post.id comment.id %}" method="post">
+                                            {% csrf_token %}
+                                            {{ reply_form.as_p }}
+                                            <input type="submit" value="Send" class="btn btn-primary mb-2">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            {% endif %}
+        {% with replies=comment.rcomments.all %}
+            {% for reply in replies %}
+                <P class="bg-secondary p-4 m-3">{{ reply.user }} <br>{{ reply.body }}</p>
+
+            {% endfor %}
+        {% endwith %}</div> <br>
     {% empty %}
         <p> No Comments yet </p>
     {% endfor %}
