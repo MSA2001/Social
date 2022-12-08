@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
     <h4>{{ post.title }}</h4>
     <a href="{% url 'account:profile' post.user.id %}"><h6>{{ post.user.username }}</h6></a>
     <p>{{ post.body }}</p>
@@ -40,31 +41,33 @@
             <P class="card-body">{{ comment.body }}</P>
             {% if request.user.is_authenticated %}
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="down-contact">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <form action="{% url 'home:add_reply' post.id comment.id %}" method="post">
-                                            {% csrf_token %}
-                                            {{ reply_form.as_p }}
-                                            <input type="submit" value="Send" class="btn btn-primary mb-2">
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row">
+                <div class="col-lg-12">
+                <div class="down-contact">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <form action="{% url 'home:add_reply' post.id comment.id %}" method="post">
+                            {% csrf_token %}
+                            {{ reply_form.as_p }}
+                            <input type="submit" value="Send" class="btn btn-primary mb-2">
+                        </form>
                     </div>
                 </div>
-                </div>
+
 
             {% endif %}
-        {% with replies=comment.rcomments.all %}
-            {% for reply in replies %}
-                <P class="bg-secondary p-4 m-3">{{ reply.user }} <br>{{ reply.body }}</p>
+            {% with replies=comment.rcomments.all %}
+                {% for reply in replies %}
+                    <P class="bg-secondary p-4 m-3">{{ reply.user }} <br>{{ reply.body }}</p>
 
-            {% endfor %}
-        {% endwith %}</div> <br>
+                {% endfor %}
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+            {% endwith %}
+        </div> <br>
     {% empty %}
         <p> No Comments yet </p>
     {% endfor %}

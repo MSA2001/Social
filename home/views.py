@@ -116,7 +116,7 @@ class PostAddReplyView(LoginRequiredMixin, View):
             reply.reply = comment
             reply.is_reply = True
             reply.save()
-            messages.success(request,'your reply submitted successfully', 'success')
+            messages.success(request, 'your reply submitted successfully', 'success')
         return redirect('home:post_detail', post.id, post.slug)
 
 
