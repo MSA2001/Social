@@ -5,8 +5,6 @@
     <form action="" method="post" novalidate >
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Register" >
-
+    <input type="submit" value="Register" class="btn btn-primary" >
     </form>
-    <a href="{% url 'account:reset_password' %}"><button class="btn btn-link"> Forget Password?</button></a>
 {% endblock %}
