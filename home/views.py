@@ -4,7 +4,7 @@ from django.views import View
 from .models import Post, Comment, Vote
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .forms import PostUpdateForm, PostCreateForm, CommentCreateForm, CommentReplyForm
+from .forms import PostUpdateForm, PostCreateForm, CommentCreateForm, CommentReplyForm, PostSearchForm
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -12,10 +12,14 @@ from django.utils.decorators import method_decorator
 
 
 class HomeView(View):
+    form_class = PostSearchForm
+
     def get(self, request):
         posts = Post.objects.all()
 
-        return render(request, 'home/index.html', {'posts': posts})
+        if request.GET.get('search'):
+            posts = posts.filter(title__icontains=request.GET.get('search'))
+        return render(request, 'home/index.html', {'posts': posts, 'form': self.form_class})
 
 
 class PostDetailView(View):
@@ -28,8 +32,6 @@ class PostDetailView(View):
 
     def get(self, request, *args, **kwargs):
         comments = self.post_instance.pcomments.filter(is_reply=False)
-        can_like = False
-
         return render(request, 'home/detail.html', {'post': self.post_instance, 'comments': comments,
                                                     'form': self.form_class, 'reply_form': self.form_class_reply})
 

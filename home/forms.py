@@ -36,3 +36,7 @@ class CommentReplyForm(forms.ModelForm):
         labels = {
             "body": ""
         }
+
+
+class PostSearchForm(forms.Form):
+    search = forms.CharField(label="", widget=forms.TextInput(attrs={'class': 'special', 'placeholder': 'Search here'}))
