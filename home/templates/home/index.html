@@ -3,9 +3,16 @@
 {% block content %}
     <h2 class="text-center">Home page</h2>
 
+    <form action="" method="get">
+    {{ form }}
+    <input type="submit" class="btn btn-dark" value="Search">
+
+    </form>
+
     <div class="card">
     {% for post in posts %}
-        <a class="card-body" href="{{ post.get_absolute_url }}">{{ post.body|truncatewords:10 }}</a>
+        <a class="card-body" href="{{ post.get_absolute_url }}" style="text-decoration: none" ><h6>{{ post.title }}</h6>
+        {{ post.body|truncatewords:15 }}</a><hr>
     {% endfor %}
     </div>
 
