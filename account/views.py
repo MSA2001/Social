@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from home.models import Post
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from .models import Relation, Profile
+from .models import Relation
 
 # Create your views here.
 
