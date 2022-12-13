@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 # Create your models here.
+from django.utils.text import slugify
 
 
 class Post(models.Model):
@@ -14,6 +15,10 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-updated',)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.slug = slugify(self.title)
+        super(Post, self).save()
 
     def __str__(self):
         return self.slug
